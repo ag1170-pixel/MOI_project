@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold mb-0">{{ page_title }}</h2>
+    <p class="text-muted small mb-0">Fill in the details below to create your static SEO page</p>
+  </div>
+  <a href="{% url 'dashboard:index' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+  </a>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="page-form" novalidate>
+  {% csrf_token %}
+
+  <!-- Non-field errors -->
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  <div class="row g-4">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-8">
+
+      <!-- 1. Basic Info -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-type me-2 text-primary"></i>Basic Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="id_title">Title <span class="text-danger">*</span></label>
+            {{ form.title }}
+            {% if form.title.errors %}<div class="invalid-feedback d-block">{{ form.title.errors|join:" " }}</div>{% endif %}
+            <small class="text-muted">The main heading of your page</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="id_slug">URL Slug <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text text-muted">/published_pages/</span>
+              {{ form.slug }}
+              <span class="input-group-text text-muted">.html</span>
+            </div>
+            {% if form.slug.errors %}<div class="invalid-feedback d-block">{{ form.slug.errors|join:" " }}</div>{% endif %}
+            <small class="text-muted">Auto-generated from title. Only letters, numbers, and hyphens.</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.description.id_for_label }}">Description</label>
+            {{ form.description }}
+            {% if form.description.errors %}<div class="invalid-feedback d-block">{{ form.description.errors|join:" " }}</div>{% endif %}
+            <small class="text-muted">Meta description — 150–160 characters recommended for SEO</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.category.id_for_label }}">
+              Category <span class="text-danger">*</span>
+            </label>
+            {{ form.category }}
+            {% if form.category.errors %}<div class="invalid-feedback d-block">{{ form.category.errors|join:" " }}</div>{% endif %}
+            <small class="text-muted">
+              Determines which public tab this page appears under:
+              <strong>Home</strong> (General),
+              <span class="text-primary">Maps</span>, or
+              <span class="text-warning">My India</span>
+            </small>
+          </div>
+          <div class="mb-0">
+            <label class="form-label fw-semibold" for="{{ form.keywords.id_for_label }}">Keywords</label>
+            {{ form.keywords }}
+            {% if form.keywords.errors %}<div class="invalid-feedback d-block">{{ form.keywords.errors|join:" " }}</div>{% endif %}
+            <small class="text-muted">Comma-separated: india, maps, geography</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Body Content -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-body-text me-2 text-success"></i>Body Content</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-0">
+            <label class="form-label fw-semibold">Page Content</label>
+            {{ form.body_content }}
+            {% if form.body_content.errors %}<div class="invalid-feedback d-block">{{ form.body_content.errors|join:" " }}</div>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Schema -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-code-square me-2 text-warning"></i>Schema (JSON-LD)</h5>
+          <span class="badge bg-warning text-dark">Structured Data</span>
+        </div>
+        <div class="card-body">
+          {{ form.schema_json }}
+          {% if form.schema_json.errors %}<div class="invalid-feedback d-block">{{ form.schema_json.errors|join:" " }}</div>{% endif %}
+          <small class="text-muted mt-2 d-block">
+            <i class="bi bi-info-circle me-1"></i>
+            Paste raw JSON-LD for Google structured data.
+            <a href="https://schema.org" target="_blank">schema.org</a>
+          </small>
+        </div>
+      </div>
+
+      <!-- 4. Related Links -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-link-45deg me-2 text-info"></i>Related Links</h5>
+          <button type="button" class="btn btn-outline-info btn-sm" id="add-link-btn">
+            <i class="bi bi-plus-lg me-1"></i>Add Link
+          </button>
+        </div>
+        <div class="card-body">
+          {{ formset.management_form }}
+          <div id="formset-container">
+            {% for link_form in formset %}
+            <div class="related-link-row border rounded p-3 mb-2 bg-light">
+              <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                  <label class="form-label small fw-semibold mb-1">Link Text</label>
+                  {{ link_form.label }}
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label small fw-semibold mb-1">URL</label>
+                  {{ link_form.url }}
+                </div>
+                <div class="col-md-1 text-center">
+                  <label class="form-label small fw-semibold mb-1 d-block">New Tab</label>
+                  {{ link_form.open_new_tab }}
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label small fw-semibold mb-1">Order</label>
+                  {{ link_form.order }}
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                  {% if link_form.instance.pk %}
+                  <div class="form-check">
+                    {{ link_form.DELETE }}
+                    <label class="form-check-label small text-danger" for="{{ link_form.DELETE.id_for_label }}">Del</label>
+                  </div>
+                  {% endif %}
+                  {{ link_form.id }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div id="empty-form-template" class="d-none">
+            <div class="related-link-row border rounded p-3 mb-2 bg-light">
+              <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                  <label class="form-label small fw-semibold mb-1">Link Text</label>
+                  <input type="text" name="related_links-__prefix__-label" class="form-control" placeholder="Link text">
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label small fw-semibold mb-1">URL</label>
+                  <input type="url" name="related_links-__prefix__-url" class="form-control" placeholder="https://">
+                </div>
+                <div class="col-md-1 text-center">
+                  <label class="form-label small fw-semibold mb-1 d-block">New Tab</label>
+                  <input type="checkbox" name="related_links-__prefix__-open_new_tab" class="form-check-input">
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label small fw-semibold mb-1">Order</label>
+                  <input type="number" name="related_links-__prefix__-order" value="0" class="form-control" style="width:80px">
+                </div>
+                <div class="col-md-1">
+                  <input type="hidden" name="related_links-__prefix__-id" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /LEFT COLUMN -->
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-lg-4">
+
+      <!-- Action bar -->
+      <div class="card border-0 shadow-sm mb-4 sticky-top" style="top:70px;">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-gear me-2"></i>Actions</h5>
+        </div>
+        <div class="card-body d-grid gap-2">
+          <button type="submit" name="action" value="draft" class="btn btn-outline-secondary">
+            <i class="bi bi-floppy me-1"></i> Save Draft
+          </button>
+          {% if not is_create and page %}
+          <a href="{% url 'pages:preview' page.pk %}" target="_blank" class="btn btn-outline-info">
+            <i class="bi bi-display me-1"></i> Preview
+          </a>
+          <form method="post" action="{% url 'pages:publish' page.pk %}" class="m-0">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success w-100">
+              <i class="bi bi-upload me-1"></i> Publish Now
+            </button>
+          </form>
+          {% endif %}
+        </div>
+        {% if not is_create and page %}
+        <div class="card-footer bg-light text-muted small">
+          <div><i class="bi bi-clock me-1"></i>Created: {{ page.created_at|date:"M d, Y" }}</div>
+          <div><i class="bi bi-arrow-repeat me-1"></i>Updated: {{ page.updated_at|date:"M d, Y H:i" }}</div>
+          {% if page.published_at %}
+          <div><i class="bi bi-check2-circle me-1 text-success"></i>Published: {{ page.published_at|date:"M d, Y H:i" }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- SEO -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-search me-2 text-danger"></i>SEO Settings</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Canonical URL</label>
+            {{ form.canonical_url }}
+            <small class="text-muted">Leave blank to auto-generate</small>
+          </div>
+          <hr class="my-3">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">OG Title</label>
+            {{ form.og_title }}
+            <small class="text-muted">Defaults to page title</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">OG Description</label>
+            {{ form.og_description }}
+          </div>
+          <div class="mb-0">
+            <label class="form-label small fw-semibold">OG Image</label>
+            {{ form.og_image }}
+            {% if form.og_image.errors %}<div class="invalid-feedback d-block">{{ form.og_image.errors|join:" " }}</div>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="mb-0 fw-semibold"><i class="bi bi-image me-2 text-secondary"></i>Featured Image</h5>
+        </div>
+        <div class="card-body">
+          {{ form.featured_image }}
+          {% if form.featured_image.errors %}<div class="invalid-feedback d-block">{{ form.featured_image.errors|join:" " }}</div>{% endif %}
+          {% if not is_create and page.featured_image %}
+          <div class="mt-2">
+            <img src="{{ page.featured_image.url }}" alt="Featured" class="img-thumbnail" style="max-width:100%; max-height:150px;">
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Editor info -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body py-3">
+          <small class="text-muted">
+            <i class="bi bi-person me-1"></i>
+            <strong>Editor:</strong> {{ request.user.get_full_name|default:request.user.username }}
+          </small>
+        </div>
+      </div>
+
+    </div><!-- /RIGHT COLUMN -->
+
+  </div><!-- /row -->
+</form>
+{% endblock %}
+
+{% block extra_js %}
+{{ form.media }}
+<script>
+// Auto-generate slug from title
+const titleInput = document.getElementById('id_title');
+const slugInput = document.getElementById('id_slug');
+let slugEdited = slugInput && slugInput.value.length > 0;
+
+if (titleInput && slugInput) {
+  slugInput.addEventListener('input', () => { slugEdited = true; });
+  titleInput.addEventListener('input', function () {
+    if (!slugEdited) {
+      slugInput.value = this.value
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+  });
+}
+
+// Dynamic formset: add related link row
+const addBtn = document.getElementById('add-link-btn');
+const container = document.getElementById('formset-container');
+const totalFormsInput = document.getElementById('id_related_links-TOTAL_FORMS');
+
+if (addBtn && container && totalFormsInput) {
+  addBtn.addEventListener('click', function () {
+    const currentTotal = parseInt(totalFormsInput.value);
+    const template = document.getElementById('empty-form-template').innerHTML;
+    const newForm = template.replace(/__prefix__/g, currentTotal);
+    container.insertAdjacentHTML('beforeend', newForm);
+    totalFormsInput.value = currentTotal + 1;
+  });
+}
+</script>
+{% endblock %}

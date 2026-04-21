@@ -1,0 +1,84 @@
+/* MOI Panel — Custom Styles */
+
+/* Sidebar nav active state */
+.sidebar .nav-link {
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar .nav-link:hover:not(.active) {
+  background: #f0f4ff;
+  color: #0d6efd !important;
+}
+
+/* Table row hover */
+.table-hover tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+/* Card subtle hover */
+.card {
+  transition: box-shadow 0.15s;
+}
+
+/* Form labels */
+.form-label.fw-semibold {
+  font-size: 0.875rem;
+}
+
+/* Related link rows */
+.related-link-row {
+  transition: background 0.1s;
+}
+.related-link-row:hover {
+  background: #e9f0ff !important;
+}
+
+/* Code / pre blocks */
+pre code {
+  font-size: 0.82rem;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* Prose / body content rendering */
+.prose h1, .prose h2, .prose h3,
+.prose h4, .prose h5, .prose h6 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.prose p { margin-bottom: 1rem; }
+.prose img { max-width: 100%; height: auto; border-radius: 4px; }
+.prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose blockquote {
+  border-left: 4px solid #dee2e6;
+  padding-left: 1rem;
+  color: #666;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+.prose table th,
+.prose table td {
+  border: 1px solid #dee2e6;
+  padding: .5rem .75rem;
+}
+.prose table th { background: #f8f9fa; }
+
+/* Badge colors */
+.bg-warning.text-dark { color: #000 !important; }
+
+/* CKEditor wrapper fix */
+.ck-editor__editable {
+  min-height: 300px !important;
+}
+
+/* Sticky action bar spacing */
+@media (max-width: 991.98px) {
+  .sticky-top { position: static !important; }
+}
+
+/* Alert message tag mapping */
+.alert-error { background-color: #f8d7da; border-color: #f5c2c7; color: #842029; }

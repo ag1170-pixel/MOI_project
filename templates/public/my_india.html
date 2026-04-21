@@ -1,0 +1,75 @@
+{% extends "public/public_base.html" %}
+{% block nav_my_india %}active{% endblock %}
+
+{% block body %}
+
+<!-- My India Hero -->
+<section class="hero-banner" style="background: linear-gradient(135deg, #78350f 0%, #b45309 100%);">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:.85rem 1.1rem;">
+            <i class="bi bi-india" style="font-size:2.2rem;color:var(--moi-gold);"></i>
+          </div>
+          <div>
+            <h1 class="mb-1">My India</h1>
+            <p class="mb-0 opacity-75">Stories, culture, heritage and travel experiences across incredible India</p>
+          </div>
+        </div>
+        {% if total %}
+        <span class="badge bg-warning text-dark fw-semibold px-3 py-2">
+          <i class="bi bi-collection me-1"></i>{{ total }} stor{{ total|pluralize:"y,ies" }}
+        </span>
+        {% endif %}
+      </div>
+      <div class="col-lg-3 d-none d-lg-flex justify-content-end">
+        <div style="font-size:7rem;opacity:.15;"><i class="bi bi-journal-richtext"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+
+  {% if page_obj.object_list %}
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="section-title mb-0">All My India Stories</h2>
+    <a href="/" class="text-muted small text-decoration-none">
+      <i class="bi bi-arrow-left me-1"></i>Back to Home
+    </a>
+  </div>
+
+  <div class="row g-4">
+    {% for p in page_obj %}
+    <div class="col-sm-6 col-lg-4">
+      {% include "public/_article_card.html" %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% include "public/_pagination.html" %}
+
+  {% else %}
+
+  <div class="empty-state">
+    <div style="font-size:4rem;color:#fde68a;" class="mb-3"><i class="bi bi-journal-richtext"></i></div>
+    <h3 class="fw-bold" style="color:#92400e;">No My India stories yet</h3>
+    <p class="text-muted">
+      Create a new page in the panel and set its <strong>Category</strong> to <strong>My India</strong> — it will appear here automatically.
+    </p>
+    {% if request.user.is_authenticated %}
+    <a href="/pages/create/" class="btn fw-semibold mt-2" style="background:#b45309;color:#fff;">
+      <i class="bi bi-plus-lg me-1"></i>Write a My India Story
+    </a>
+    {% endif %}
+    <div class="mt-3">
+      <a href="/" class="text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+    </div>
+  </div>
+
+  {% endif %}
+
+</div>
+{% endblock %}

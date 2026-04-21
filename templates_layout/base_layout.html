@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  {% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}">{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ page.og_title|default:page.title }}">
+  <meta property="og:description" content="{{ page.og_description|default:page.description }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {% if og_image_url %}<meta property="og:image" content="{{ og_image_url }}">{% endif %}
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.og_title|default:page.title }}">
+  <meta name="twitter:description" content="{{ page.og_description|default:page.description }}">
+  {% if og_image_url %}<meta name="twitter:image" content="{{ og_image_url }}">{% endif %}
+
+  <!-- Schema / JSON-LD Structured Data -->
+  {% if page.schema_json %}
+  <script type="application/ld+json">{{ page.schema_json|safe }}</script>
+  {% endif %}
+
+  <!-- Bootstrap (placeholder styling — replace with Raj's layout) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       PLACEHOLDER LAYOUT — Replace this entire file with Raj's
+       template. Keep all {{ variable }} tags intact.
+       ============================================================ */
+    body { font-family: 'Segoe UI', sans-serif; color: #222; }
+    .site-header { background: #1a3c6e; color: #fff; padding: 1rem 0; }
+    .site-header .brand { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; }
+    .site-footer { background: #1a3c6e; color: #ccc; padding: 2rem 0; margin-top: 4rem; font-size: .875rem; }
+    .featured-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: .5rem; margin-bottom: 1.5rem; }
+    .page-meta { font-size: .875rem; color: #666; margin-bottom: 1.5rem; }
+    .page-content img { max-width: 100%; height: auto; }
+    .related-links-section { background: #f8f9fa; border-left: 4px solid #1a3c6e; padding: 1.25rem 1.5rem; border-radius: .25rem; margin-top: 2rem; }
+
+    {% if is_preview %}
+    /* Preview mode banner */
+    body::before {
+      content: "PREVIEW MODE — Not Published Yet";
+      display: block;
+      background: #ffc107;
+      color: #000;
+      text-align: center;
+      padding: .5rem;
+      font-weight: 700;
+      font-size: .875rem;
+      letter-spacing: .05em;
+    }
+    {% endif %}
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER PLACEHOLDER — Replace with Raj's header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/" class="brand">
+          <span style="color:#ffd700;">&#9679;</span> Maps of India
+        </a>
+        <nav class="d-none d-md-flex gap-2">
+          <a href="/" style="color:{% if page.category == 'general' or not page.category %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'general' or not page.category %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">Home</a>
+          <a href="/maps" style="color:{% if page.category == 'maps' %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'maps' %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">Maps</a>
+          <a href="/my-india" style="color:{% if page.category == 'my_india' %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'my_india' %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">My India</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <!-- ===== END HEADER PLACEHOLDER ===== -->
+
+  <!-- Main content -->
+  <main>
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+
+          <!-- Featured Image -->
+          {% if featured_image_url %}
+          <img src="{{ featured_image_url }}" alt="{{ page.title }}" class="featured-img">
+          {% endif %}
+
+          <!-- Title -->
+          <h1 class="fw-bold mb-2">{{ page.title }}</h1>
+
+          <!-- Page meta -->
+          <div class="page-meta">
+            {% if page.editor %}
+            <span>By <strong>{{ page.editor.get_full_name|default:page.editor.username }}</strong></span>
+            &nbsp;&bull;&nbsp;
+            {% endif %}
+            {% if page.published_at %}
+            <span>{{ page.published_at|date:"F j, Y" }}</span>
+            {% else %}
+            <span>{{ page.created_at|date:"F j, Y" }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Body content -->
+          {% if page.body_content %}
+          <article class="page-content">
+            {{ page.body_content|safe }}
+          </article>
+          {% endif %}
+
+          <!-- Related Links -->
+          {% with links=related_links %}
+          {% if links %}
+          <div class="related-links-section mt-4">
+            <h4 class="fw-semibold mb-3" style="color:#1a3c6e;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+              </svg>
+              Related Links
+            </h4>
+            <ul class="list-unstyled mb-0">
+              {% for link in links %}
+              <li class="mb-2">
+                <a href="{{ link.url }}"
+                   {% if link.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                   style="color:#1a3c6e;">
+                  &rarr; {{ link.label }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          {% endwith %}
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER PLACEHOLDER — Replace with Raj's footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="mb-1 fw-semibold text-white">Maps of India</p>
+          <p class="mb-0">Your complete guide to India's maps, geography and travel.</p>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+          <p class="mb-0">&copy; {% now "Y" %} Maps of India. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- ===== END FOOTER PLACEHOLDER ===== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

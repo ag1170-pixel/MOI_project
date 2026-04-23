@@ -1,103 +1,316 @@
 {% extends "public/public_base.html" %}
+{% block page_title %}My India — Discover India Like Never Before{% endblock %}
 {% block nav_home %}active{% endblock %}
 
 {% block body %}
 
-<!-- Hero Banner -->
-<section class="hero-banner">
-  <div class="container">
+<!-- ═══ HERO ═══ -->
+<section class="hero-section">
+  <div class="hero-bg" style="
+    {% if hero_image %}background-image:url('{{ hero_image }}');{% else %}
+    background: linear-gradient(135deg, #1a3c6e 0%, #1e40af 100%);{% endif %}
+  "></div>
+  <div class="hero-bg-gradient"></div>
+
+  <div class="container hero-content py-5">
     <div class="row align-items-center">
       <div class="col-lg-7">
-        <h1><i class="bi bi-globe-asia-australia me-2" style="color:var(--moi-gold);"></i>Explore India</h1>
-        <p class="mb-4">Discover detailed maps, travel guides, and fascinating stories about India's diverse states, cities, and culture.</p>
-        <div class="d-flex gap-3 flex-wrap">
-          <a href="/maps" class="btn btn-warning btn-lg fw-bold px-4">
-            <i class="bi bi-map-fill me-2"></i>Explore Maps
+
+        <div class="hero-badge">
+          <div class="flag-dot">
+            <span style="background:#FF9933;"></span>
+            <span style="background:#fff;"></span>
+            <span style="background:#138808;"></span>
+          </div>
+          Incredible India
+        </div>
+
+        <h1 class="hero-title">
+          Discover India<br>
+          <span class="t-orange">Like</span> Never <span class="t-green">Before</span>
+        </h1>
+
+        <p class="hero-sub">
+          Explore the rich tapestry of culture, heritage, landscapes, and stories that make India truly incredible.
+        </p>
+
+        <div class="hero-search">
+          <input type="text" placeholder="Explore places, culture, food, festivals..." readonly>
+          <button type="button">Explore &rarr;</button>
+        </div>
+
+        <div class="hero-btns">
+          <a href="/maps" class="btn-explore">
+            Explore Now <i class="bi bi-arrow-right"></i>
           </a>
-          <a href="/my-india" class="btn btn-outline-light btn-lg px-4">
-            <i class="bi bi-india me-2"></i>My India Stories
+          <a href="/my-india" class="btn-watch">
+            <i class="bi bi-play-circle"></i> Stories
           </a>
         </div>
-      </div>
-      <div class="col-lg-4 d-none d-lg-flex justify-content-end">
-        <div style="font-size:9rem;opacity:.2;"><i class="bi bi-globe-asia-australia"></i></div>
+
+        <div class="cat-pills">
+          <span class="cat-pill active"><i class="bi bi-palette me-1"></i>Culture</span>
+          <span class="cat-pill"><i class="bi bi-airplane me-1"></i>Travel</span>
+          <span class="cat-pill"><i class="bi bi-cup-hot me-1"></i>Food</span>
+          <span class="cat-pill"><i class="bi bi-book me-1"></i>History</span>
+          <span class="cat-pill"><i class="bi bi-geo-alt me-1"></i>Geography</span>
+          <span class="cat-pill"><i class="bi bi-stars me-1"></i>Festivals</span>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══ HOW DO YOU WANT TO EXPLORE ═══ -->
 <div class="container py-5">
-
-  {% if page_obj.object_list %}
-
-  <!-- All Latest Articles -->
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <h2 class="section-title mb-0">Latest Articles</h2>
-    <span class="text-muted small">{{ total_published }} article{{ total_published|pluralize }} published</span>
+  <div class="text-center mb-4">
+    <div class="section-eyebrow"><i class="bi bi-compass"></i>Explore India</div>
+    <h2 class="section-heading">How Do You Want to <span class="word-orange">Explore?</span></h2>
+    <p class="section-sub">Choose your journey based on what moves your spirit</p>
   </div>
-  <div class="row g-4 mb-5">
-    {% for p in page_obj %}
-    <div class="col-sm-6 col-lg-4">
-      {% include "public/_article_card.html" %}
+
+  <div class="row g-3 mb-5">
+    <div class="col-6 col-md-3">
+      <div class="explore-box">
+        <div class="box-content">
+          <div class="box-icon"><i class="bi bi-trophy-fill"></i></div>
+          <div class="box-title">Adventure</div>
+          <div class="box-line"></div>
+        </div>
+      </div>
     </div>
-    {% endfor %}
+    <div class="col-6 col-md-3">
+      <div class="explore-box">
+        <div class="box-content">
+          <div class="box-icon"><i class="bi bi-flower1"></i></div>
+          <div class="box-title">Spiritual</div>
+          <div class="box-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="explore-box">
+        <div class="box-content">
+          <div class="box-icon"><i class="bi bi-egg-fried"></i></div>
+          <div class="box-title">Food</div>
+          <div class="box-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="explore-box">
+        <div class="box-content">
+          <div class="box-icon"><i class="bi bi-tree-fill"></i></div>
+          <div class="box-title">Nature</div>
+          <div class="box-line"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  {% include "public/_pagination.html" %}
+</div>
 
-  {% else %}
+<!-- ═══ LATEST ARTICLES ═══ -->
+{% if page_obj.object_list %}
+<div class="section-wrap" style="background:#F9FAFB; padding-top:0; margin-top:-1rem;">
+  <div class="container">
+    <div class="text-center mb-5 pt-5">
+      <div class="section-eyebrow"><i class="bi bi-graph-up-arrow"></i>Trending</div>
+      <h2 class="section-heading">
+        <span class="word-orange">Latest</span> <span class="word-green">Articles</span>
+      </h2>
+      <p class="section-sub">Stay updated with the most popular stories from across India</p>
+    </div>
 
-  <!-- Empty state -->
+    <div class="row g-4">
+      {% for p in page_obj %}
+      <div class="col-sm-6 col-lg-4">
+        {% include "public/_article_card.html" %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% include "public/_pagination.html" %}
+
+    {% if total_published > 6 %}
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-secondary btn-sm px-4" style="border-radius:20px;">
+        <i class="bi bi-arrow-down-circle me-1"></i>Load More Articles
+      </button>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<!-- ═══ MAPS PREVIEW ═══ -->
+{% if maps_pages %}
+<div class="section-wrap">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <div class="section-eyebrow d-inline-flex" style="text-align:left;"><i class="bi bi-map-fill"></i>Maps</div>
+        <h2 class="section-heading text-start" style="text-align:left !important;">
+          <span class="word-navy">Explore</span> <span class="word-orange">India's Maps</span>
+        </h2>
+      </div>
+      <a href="/maps" class="btn btn-sm text-decoration-none d-flex align-items-center gap-1"
+         style="background:#FFF7ED;color:var(--orange);border:1px solid #FED7AA;border-radius:8px;font-weight:600;padding:.4rem 1rem;white-space:nowrap;">
+        View all <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="row g-4">
+      {% for p in maps_pages %}
+      <div class="col-sm-6 col-lg-4">
+        {% include "public/_article_card.html" %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- ═══ MY INDIA / FEATURED STORIES ═══ -->
+{% if my_india_pages %}
+<div class="section-wrap bg-light-warm">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-eyebrow"><i class="bi bi-star-fill"></i>Featured</div>
+      <h2 class="section-heading">Featured <span class="word-orange">Stories</span></h2>
+      <p class="section-sub">Dive into compelling narratives that capture the essence of India</p>
+    </div>
+
+    <div class="row g-4">
+      {% for p in my_india_pages %}
+      <div class="col-sm-6 col-lg-4">
+        {% include "public/_article_card.html" %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/my-india"
+         style="color:var(--orange);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+        View all My India stories <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- ═══ FASCINATING FACTS ═══ -->
+<div class="section-wrap">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-eyebrow"><i class="bi bi-lightbulb-fill"></i>Did You Know?</div>
+      <h2 class="section-heading"><span class="word-orange">Fascinating</span> Facts</h2>
+      <p class="section-sub">Quick insights about India that will amaze you.</p>
+    </div>
+
+    <div class="row g-3 mb-5">
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-translate"></i></div>
+          <div class="fact-title">India has 22 official languages</div>
+          <div class="fact-desc">Making it one of the most linguistically diverse countries in the world.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-people-fill"></i></div>
+          <div class="fact-title">World's largest democracy</div>
+          <div class="fact-desc">With over 1.4 billion people and a vibrant democratic tradition.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-building-fill"></i></div>
+          <div class="fact-title">38 UNESCO World Heritage Sites</div>
+          <div class="fact-desc">From ancient temples to colonial forts, India's history is unparalleled.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-controller"></i></div>
+          <div class="fact-title">Chess was invented in India</div>
+          <div class="fact-desc">Known as Chaturanga in ancient times — the game of kings.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-heart-fill"></i></div>
+          <div class="fact-title">Home to 8 major religions</div>
+          <div class="fact-desc">A land of spiritual diversity — birthplace of Hinduism, Buddhism, Jainism and Sikhism.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="fact-card">
+          <div class="fact-icon"><i class="bi bi-droplet-fill"></i></div>
+          <div class="fact-title">Wettest place on Earth</div>
+          <div class="fact-desc">Mawsynram receives 467 inches of rain annually — the highest in the world.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="stat-item">
+          <div class="stat-num">28+8</div>
+          <div class="stat-label">States &amp; UTs</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item">
+          <div class="stat-num">22+</div>
+          <div class="stat-label">Languages</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item">
+          <div class="stat-num">38</div>
+          <div class="stat-label">Heritage Sites</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item">
+          <div class="stat-num">1.4B+</div>
+          <div class="stat-label">Population</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<div class="newsletter-section">
+  <div class="container text-center">
+    <h3>Stay Connected with India</h3>
+    <p class="text-muted">Subscribe to our newsletter for the latest stories, travel tips, and cultural insights.</p>
+    <div class="newsletter-input-wrap mx-auto">
+      <input type="email" placeholder="Enter your email">
+      <button type="button">Subscribe <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Empty state -->
+{% if not page_obj.object_list and not maps_pages and not my_india_pages %}
+<div class="container py-5">
   <div class="empty-state">
-    <div style="font-size:4rem;color:#ccc;" class="mb-3"><i class="bi bi-newspaper"></i></div>
-    <h3 class="fw-bold text-muted">No articles published yet</h3>
+    <div style="font-size:4rem;color:#fed7aa;" class="mb-3"><i class="bi bi-newspaper"></i></div>
+    <h3 class="fw-bold" style="color:var(--orange);">No articles published yet</h3>
     <p class="text-muted">Articles published through the panel will appear here automatically.</p>
     {% if request.user.is_authenticated %}
-    <a href="/dashboard/" class="btn btn-warning mt-2 fw-semibold">
+    <a href="/dashboard/" class="btn mt-2 fw-semibold"
+       style="background:var(--orange);color:#fff;border-radius:10px;padding:.6rem 1.5rem;">
       <i class="bi bi-plus-lg me-1"></i>Go to Panel
     </a>
     {% endif %}
   </div>
-
-  {% endif %}
-
-  {% if maps_pages %}
-  <!-- Maps Preview Section -->
-  <hr class="my-5">
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <h2 class="section-title mb-0">
-      <i class="bi bi-map-fill me-2" style="color:#1e40af;"></i>Maps
-    </h2>
-    <a href="/maps" class="btn btn-outline-primary btn-sm">
-      View all <i class="bi bi-arrow-right ms-1"></i>
-    </a>
-  </div>
-  <div class="row g-4 mb-5">
-    {% for p in maps_pages %}
-    <div class="col-sm-6 col-lg-4">
-      {% include "public/_article_card.html" %}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if my_india_pages %}
-  <!-- My India Preview Section -->
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <h2 class="section-title mb-0">
-      <i class="bi bi-india me-2" style="color:#92400e;"></i>My India
-    </h2>
-    <a href="/my-india" class="btn btn-outline-warning btn-sm">
-      View all <i class="bi bi-arrow-right ms-1"></i>
-    </a>
-  </div>
-  <div class="row g-4">
-    {% for p in my_india_pages %}
-    <div class="col-sm-6 col-lg-4">
-      {% include "public/_article_card.html" %}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
 </div>
+{% endif %}
+
 {% endblock %}

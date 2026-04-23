@@ -10,7 +10,7 @@
   {% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}">{% endif %}
   <link rel="canonical" href="{{ canonical_url }}">
 
-  <!-- Open Graph / Facebook -->
+  <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="{{ page.og_title|default:page.title }}">
   <meta property="og:description" content="{{ page.og_description|default:page.description }}">
@@ -23,144 +23,335 @@
   <meta name="twitter:description" content="{{ page.og_description|default:page.description }}">
   {% if og_image_url %}<meta name="twitter:image" content="{{ og_image_url }}">{% endif %}
 
-  <!-- Schema / JSON-LD Structured Data -->
+  <!-- Schema JSON-LD -->
   {% if page.schema_json %}
   <script type="application/ld+json">{{ page.schema_json|safe }}</script>
   {% endif %}
 
-  <!-- Bootstrap (placeholder styling — replace with Raj's layout) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
   <style>
-    /* ============================================================
-       PLACEHOLDER LAYOUT — Replace this entire file with Raj's
-       template. Keep all {{ variable }} tags intact.
-       ============================================================ */
-    body { font-family: 'Segoe UI', sans-serif; color: #222; }
-    .site-header { background: #1a3c6e; color: #fff; padding: 1rem 0; }
-    .site-header .brand { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; }
-    .site-footer { background: #1a3c6e; color: #ccc; padding: 2rem 0; margin-top: 4rem; font-size: .875rem; }
-    .featured-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: .5rem; margin-bottom: 1.5rem; }
-    .page-meta { font-size: .875rem; color: #666; margin-bottom: 1.5rem; }
-    .page-content img { max-width: 100%; height: auto; }
-    .related-links-section { background: #f8f9fa; border-left: 4px solid #1a3c6e; padding: 1.25rem 1.5rem; border-radius: .25rem; margin-top: 2rem; }
+    :root {
+      --orange:  #F97316;
+      --navy:    #1a3c6e;
+      --green:   #16A34A;
+      --saffron: #FF9933;
+      --flag-g:  #138808;
+      --border:  #E5E7EB;
+      --muted:   #6B7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111827; margin: 0; }
 
     {% if is_preview %}
-    /* Preview mode banner */
     body::before {
-      content: "PREVIEW MODE — Not Published Yet";
+      content: "⚠️ PREVIEW MODE — Not Published";
       display: block;
-      background: #ffc107;
-      color: #000;
+      background: #FEF3C7;
+      color: #92400E;
       text-align: center;
-      padding: .5rem;
+      padding: .6rem;
       font-weight: 700;
-      font-size: .875rem;
-      letter-spacing: .05em;
+      font-size: .85rem;
+      border-bottom: 2px solid #FCD34D;
     }
     {% endif %}
+
+    /* ── HEADER ── */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 200;
+      padding: .65rem 0;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    .brand-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .brand-flag { display:flex; flex-direction:column; gap:2px; width:24px; }
+    .brand-flag span { height:3px; border-radius:2px; display:block; }
+    .brand-flag .f1 { background:var(--saffron); }
+    .brand-flag .f2 { background:#fff; border:1px solid #ddd; }
+    .brand-flag .f3 { background:var(--flag-g); }
+    .brand-name { font-size:1.1rem; font-weight:800; color:#111827; }
+    .site-nav { display:flex; align-items:center; gap:.25rem; }
+    .site-nav a {
+      color:var(--muted); text-decoration:none;
+      padding:.4rem .85rem; font-size:.9rem; font-weight:500;
+      border-radius:6px; transition:color .15s, background .15s;
+    }
+    .site-nav a:hover { color:#111827; background:#F3F4F6; }
+    .site-nav a.nav-active { color:var(--orange); font-weight:700; }
+
+    /* ── ARTICLE HERO ── */
+    .article-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #2563a8 100%);
+      color: #fff; padding: 3rem 0;
+    }
+    .article-hero .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+      border-radius:20px; color:rgba(255,255,255,.85);
+      font-size:.72rem; font-weight:700; padding:.2rem .75rem;
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:1rem;
+    }
+    .article-hero h1 { font-size:clamp(1.5rem,3.5vw,2.4rem); font-weight:900; margin-bottom:.75rem; }
+    .article-hero .meta {
+      display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+      font-size:.85rem; color:rgba(255,255,255,.7);
+    }
+    .article-hero .meta i { color:rgba(255,255,255,.5); }
+
+    /* ── FEATURED IMAGE ── */
+    .featured-img-wrap { margin-top:-2rem; }
+    .featured-img-wrap img {
+      width:100%; border-radius:14px;
+      box-shadow:0 8px 32px rgba(0,0,0,.15);
+      max-height:460px; object-fit:cover;
+    }
+
+    /* ── ARTICLE BODY ── */
+    .article-content { font-size:1.025rem; line-height:1.8; color:#1F2937; }
+    .article-content h1,.article-content h2,.article-content h3,
+    .article-content h4,.article-content h5,.article-content h6 {
+      font-weight:800; color:var(--navy); margin-top:2rem; margin-bottom:.75rem; line-height:1.3;
+    }
+    .article-content h2 { font-size:1.5rem; }
+    .article-content h3 { font-size:1.2rem; }
+    .article-content p { margin-bottom:1.25rem; }
+    .article-content img { max-width:100%; border-radius:10px; margin:1rem 0; }
+    .article-content a { color:var(--orange); }
+    .article-content a:hover { color:var(--navy); }
+    .article-content ul,.article-content ol { padding-left:1.5rem; margin-bottom:1.25rem; }
+    .article-content li { margin-bottom:.4rem; }
+    .article-content blockquote {
+      border-left:4px solid var(--orange);
+      background:#FFF7ED; border-radius:0 10px 10px 0;
+      padding:1rem 1.25rem; margin:1.5rem 0;
+      color:#92400E; font-style:italic;
+    }
+    .article-content table { width:100%; border-collapse:collapse; margin-bottom:1.25rem; }
+    .article-content table th { background:#F3F4F6; font-weight:700; }
+    .article-content table th,.article-content table td {
+      border:1px solid var(--border); padding:.6rem .85rem;
+    }
+    .article-content pre {
+      background:#F3F4F6; border-radius:8px; padding:1rem;
+      overflow-x:auto; font-size:.85rem;
+    }
+
+    /* ── RELATED LINKS ── */
+    .related-links-box {
+      background:#FFF7ED; border-left:4px solid var(--orange);
+      border-radius:0 12px 12px 0; padding:1.25rem 1.5rem; margin-top:2.5rem;
+    }
+    .related-links-box h4 { font-weight:800; color:var(--navy); font-size:1rem; margin-bottom:.75rem; }
+    .related-links-box ul { list-style:none; padding:0; margin:0; }
+    .related-links-box li { margin-bottom:.4rem; }
+    .related-links-box a {
+      color:var(--orange); text-decoration:none; font-size:.9rem; font-weight:500;
+      display:inline-flex; align-items:center; gap:5px;
+    }
+    .related-links-box a:hover { color:var(--navy); }
+
+    /* ── SIDEBAR ── */
+    .toc-box {
+      background:#F9FAFB; border:1px solid var(--border);
+      border-radius:12px; padding:1.25rem; margin-bottom:1.5rem;
+    }
+    .toc-box h6 { font-weight:800; font-size:.82rem; text-transform:uppercase;
+      letter-spacing:.05em; color:var(--navy); margin-bottom:.75rem; }
+    .toc-box ul { list-style:none; padding:0; margin:0; }
+    .toc-box li { border-bottom:1px solid var(--border); }
+    .toc-box li:last-child { border-bottom:none; }
+    .toc-box li a {
+      display:block; padding:.45rem 0; color:#374151;
+      font-size:.82rem; text-decoration:none; transition:color .15s;
+    }
+    .toc-box li a:hover { color:var(--orange); }
+
+    .author-box {
+      background:#fff; border:1px solid var(--border);
+      border-radius:12px; padding:1.25rem; text-align:center;
+    }
+    .author-box .avatar {
+      width:56px; height:56px; border-radius:50%;
+      background:var(--navy); color:var(--orange);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.4rem; font-weight:800; margin:0 auto .75rem;
+    }
+    .author-box .author-name { font-weight:700; font-size:.9rem; color:var(--navy); }
+    .author-box .author-date { font-size:.78rem; color:var(--muted); }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background:#111827; color:rgba(255,255,255,.55);
+      padding:3rem 0 1.5rem; font-size:.875rem; margin-top:5rem;
+    }
+    .site-footer .footer-brand { color:#fff; font-weight:800; font-size:1.05rem; margin-bottom:.4rem; }
+    .site-footer h6 { color:#fff; font-weight:700; font-size:.82rem; text-transform:uppercase;
+      letter-spacing:.04em; margin-bottom:.85rem; }
+    .site-footer ul { list-style:none; padding:0; margin:0; }
+    .site-footer li { margin-bottom:.4rem; }
+    .site-footer a { color:rgba(255,255,255,.45); text-decoration:none; font-size:.82rem; }
+    .site-footer a:hover { color:var(--orange); }
+    .site-footer hr { border-color:rgba(255,255,255,.08); margin:2rem 0 1.25rem; }
+    .site-footer .footer-bottom { font-size:.78rem; color:rgba(255,255,255,.3); }
   </style>
 </head>
 <body>
 
-  <!-- ===== HEADER PLACEHOLDER — Replace with Raj's header ===== -->
-  <header class="site-header">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <a href="/" class="brand">
-          <span style="color:#ffd700;">&#9679;</span> Maps of India
-        </a>
-        <nav class="d-none d-md-flex gap-2">
-          <a href="/" style="color:{% if page.category == 'general' or not page.category %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'general' or not page.category %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">Home</a>
-          <a href="/maps" style="color:{% if page.category == 'maps' %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'maps' %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">Maps</a>
-          <a href="/my-india" style="color:{% if page.category == 'my_india' %}var(--moi-gold){% else %}#ccc{% endif %};text-decoration:none;padding:.35rem .8rem;border-radius:20px;{% if page.category == 'my_india' %}background:rgba(255,255,255,.12);font-weight:700;{% endif %}">My India</a>
-        </nav>
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="brand-logo">
+        <div class="brand-flag">
+          <span class="f1"></span><span class="f2"></span><span class="f3"></span>
+        </div>
+        <span class="brand-name">My India</span>
+      </a>
+      <nav class="site-nav d-none d-md-flex">
+        <a href="/" class="{% if page.category == 'general' or not page.category %}nav-active{% endif %}">Home</a>
+        <a href="/maps" class="{% if page.category == 'maps' %}nav-active{% endif %}">Explore</a>
+        <a href="/my-india" class="{% if page.category == 'my_india' %}nav-active{% endif %}">Stories</a>
+      </nav>
+      <a href="/" style="color:var(--muted);font-size:.85rem;text-decoration:none;">
+        <i class="bi bi-download"></i>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ ARTICLE HERO ═══ -->
+<div class="article-hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+
+        <div class="hero-eyebrow">
+          {% if page.category == 'maps' %}<i class="bi bi-map-fill"></i>Maps
+          {% elif page.category == 'my_india' %}<i class="bi bi-india"></i>My India
+          {% else %}<i class="bi bi-file-earmark-text"></i>Article{% endif %}
+        </div>
+
+        <h1>{{ page.title }}</h1>
+
+        <div class="meta justify-content-center">
+          {% if page.editor %}
+          <span><i class="bi bi-person-fill"></i> {{ page.editor.get_full_name|default:page.editor.username }}</span>
+          {% endif %}
+          {% if page.published_at %}
+          <span><i class="bi bi-calendar3"></i> {{ page.published_at|date:"F j, Y" }}</span>
+          {% else %}
+          <span><i class="bi bi-calendar3"></i> {{ page.created_at|date:"F j, Y" }}</span>
+          {% endif %}
+          <span><i class="bi bi-clock"></i> 5 min read</span>
+        </div>
+
       </div>
     </div>
-  </header>
-  <!-- ===== END HEADER PLACEHOLDER ===== -->
+  </div>
+</div>
 
-  <!-- Main content -->
-  <main>
-    <div class="container py-4">
-      <div class="row">
-        <div class="col-lg-8 mx-auto">
+<!-- ═══ MAIN ═══ -->
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
 
-          <!-- Featured Image -->
-          {% if featured_image_url %}
-          <img src="{{ featured_image_url }}" alt="{{ page.title }}" class="featured-img">
-          {% endif %}
+        <!-- Featured Image -->
+        {% if featured_image_url %}
+        <div class="featured-img-wrap mb-5">
+          <img src="{{ featured_image_url }}" alt="{{ page.title }}">
+        </div>
+        {% else %}
+        <div style="height:2.5rem;"></div>
+        {% endif %}
 
-          <!-- Title -->
-          <h1 class="fw-bold mb-2">{{ page.title }}</h1>
+        <!-- Body -->
+        {% if page.body_content %}
+        <article class="article-content">
+          {{ page.body_content|safe }}
+        </article>
+        {% endif %}
 
-          <!-- Page meta -->
-          <div class="page-meta">
-            {% if page.editor %}
-            <span>By <strong>{{ page.editor.get_full_name|default:page.editor.username }}</strong></span>
-            &nbsp;&bull;&nbsp;
-            {% endif %}
-            {% if page.published_at %}
-            <span>{{ page.published_at|date:"F j, Y" }}</span>
-            {% else %}
-            <span>{{ page.created_at|date:"F j, Y" }}</span>
-            {% endif %}
+        <!-- Related Links -->
+        {% with links=related_links %}
+        {% if links %}
+        <div class="related-links-box">
+          <h4>
+            <i class="bi bi-link-45deg me-1" style="color:var(--orange);"></i>
+            Related Links
+          </h4>
+          <ul>
+            {% for link in links %}
+            <li>
+              <a href="{{ link.url }}"
+                 {% if link.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <i class="bi bi-arrow-right-short"></i> {{ link.label }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Back link -->
+        <div class="mt-5 pt-3 border-top d-flex justify-content-between align-items-center">
+          <a href="/" style="color:var(--muted);font-size:.88rem;text-decoration:none;display:flex;align-items:center;gap:4px;">
+            <i class="bi bi-arrow-left"></i> Back to Home
+          </a>
+          <a href="/maps" style="color:var(--orange);font-size:.88rem;text-decoration:none;display:flex;align-items:center;gap:4px;font-weight:600;">
+            More Articles <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div style="display:flex;flex-direction:column;gap:2px;width:20px;">
+            <span style="height:3px;background:#FF9933;border-radius:2px;display:block;"></span>
+            <span style="height:3px;background:rgba(255,255,255,.2);border-radius:2px;display:block;border:1px solid rgba(255,255,255,.1);"></span>
+            <span style="height:3px;background:#138808;border-radius:2px;display:block;"></span>
           </div>
-
-          <!-- Body content -->
-          {% if page.body_content %}
-          <article class="page-content">
-            {{ page.body_content|safe }}
-          </article>
-          {% endif %}
-
-          <!-- Related Links -->
-          {% with links=related_links %}
-          {% if links %}
-          <div class="related-links-section mt-4">
-            <h4 class="fw-semibold mb-3" style="color:#1a3c6e;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-              </svg>
-              Related Links
-            </h4>
-            <ul class="list-unstyled mb-0">
-              {% for link in links %}
-              <li class="mb-2">
-                <a href="{{ link.url }}"
-                   {% if link.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
-                   style="color:#1a3c6e;">
-                  &rarr; {{ link.label }}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-          {% endif %}
-          {% endwith %}
-
+          <div class="footer-brand">My India</div>
         </div>
+        <p style="color:rgba(255,255,255,.45);font-size:.82rem;">Explore the rich tapestry of culture, heritage and stories that make India truly incredible.</p>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Explore</h6>
+        <ul><li><a href="/">Home</a></li><li><a href="/maps">Maps</a></li><li><a href="/my-india">My India</a></li></ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Discover</h6>
+        <ul><li><a href="/maps">Geography</a></li><li><a href="/my-india">Culture</a></li><li><a href="/my-india">Travel</a></li></ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Resources</h6>
+        <ul><li><a href="/sitemap.xml">Sitemap</a></li><li><a href="https://www.mapsofindia.com" target="_blank">Maps of India</a></li></ul>
       </div>
     </div>
-  </main>
-
-  <!-- ===== FOOTER PLACEHOLDER — Replace with Raj's footer ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <p class="mb-1 fw-semibold text-white">Maps of India</p>
-          <p class="mb-0">Your complete guide to India's maps, geography and travel.</p>
-        </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
-          <p class="mb-0">&copy; {% now "Y" %} Maps of India. All rights reserved.</p>
-        </div>
+    <hr>
+    <div class="d-flex flex-wrap justify-content-between footer-bottom">
+      <span>&copy; {% now "Y" %} Maps of India. All rights reserved.</span>
+      <div style="display:flex;gap:1rem;">
+        <a href="#">Disclaimer</a>
+        <a href="#">Privacy Policy</a>
+        <a href="/sitemap.xml">Sitemap</a>
       </div>
     </div>
-  </footer>
-  <!-- ===== END FOOTER PLACEHOLDER ===== -->
+  </div>
+</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -44,3 +44,9 @@ Thumbs.db
 .claude/
 TEST_RESULTS.md
 demo_publish.py
+
+# Stale root-level app stub (Django uses apps.public)
+/public/
+
+# Word docs / project docs
+*.docx

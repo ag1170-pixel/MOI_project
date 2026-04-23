@@ -82,6 +82,44 @@ class Page(models.Model):
         return self.status == self.STATUS_PUBLISHED
 
 
+class SiteSettings(models.Model):
+    """Singleton model — always use SiteSettings.get_settings()"""
+    # Hero
+    hero_image        = models.ImageField(upload_to='uploads/hero/', blank=True, null=True,
+                                          help_text='Background image for the home page hero section')
+    hero_title_line1  = models.CharField(max_length=120, default='Discover India',
+                                          help_text='First line of the hero heading')
+    hero_title_line2  = models.CharField(max_length=120, default='Like Never Before',
+                                          help_text='Second line (first word orange, last word green)')
+    hero_subtitle     = models.CharField(max_length=300,
+                                          default='Explore the rich tapestry of culture, heritage, landscapes, and stories that make India truly incredible.',
+                                          help_text='Subtitle text below the heading')
+    hero_cta_text     = models.CharField(max_length=60, default='Explore Now',
+                                          help_text='Primary CTA button label')
+    hero_cta_url      = models.CharField(max_length=200, default='/maps',
+                                          help_text='Primary CTA button URL')
+
+    # Site meta
+    site_name         = models.CharField(max_length=100, default='My India')
+    tagline           = models.CharField(max_length=255,
+                                          default="Explore the rich tapestry of culture, heritage and stories that make India truly incredible.",
+                                          blank=True)
+    pages_per_section = models.PositiveSmallIntegerField(default=3,
+                                                          help_text='How many articles to preview per section on the home page')
+
+    class Meta:
+        verbose_name        = 'Site Settings'
+        verbose_name_plural = 'Site Settings'
+
+    def __str__(self):
+        return 'Site Settings'
+
+    @classmethod
+    def get_settings(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 class RelatedLink(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='related_links')
     label = models.CharField(max_length=255)

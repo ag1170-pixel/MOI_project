@@ -14,7 +14,7 @@ def regenerate():
 
     url_entries = []
     for page in pages:
-        loc = f'{settings.SITE_DOMAIN}/published_pages/{page.slug}.html'
+        loc = f'{settings.SITE_DOMAIN}/articles/{page.slug}'
         lastmod = page.updated_at.strftime('%Y-%m-%d')
         url_entries.append(
             f'  <url>\n'

@@ -1,11 +1,11 @@
-{# Reusable article card — {% include "public/_article_card.html" with p=page_obj %} #}
+{# Reusable article card — {% include "public/_article_card.html" %} #}
 <div class="art-card">
 
-  <div class="card-img-wrap">
+  <div class="img-wrap">
     {% if p.featured_image %}
     <img src="{{ p.featured_image.url }}" alt="{{ p.title }}">
     {% else %}
-    <div class="card-img-placeholder">
+    <div class="img-placeholder">
       {% if p.category == 'maps' %}<i class="bi bi-map"></i>
       {% elif p.category == 'my_india' %}<i class="bi bi-building"></i>
       {% else %}<i class="bi bi-file-earmark-text"></i>{% endif %}
@@ -28,17 +28,17 @@
     </div>
   </div>
 
-  <div class="card-body">
-    <div class="card-title">{{ p.title }}</div>
+  <div class="body">
+    <div class="art-title">{{ p.title }}</div>
     {% if p.description %}
-    <p class="card-desc">{{ p.description }}</p>
+    <p class="art-desc">{{ p.description }}</p>
     {% endif %}
-    <div class="card-footer-row">
+    <div class="art-foot">
       <span class="read-time">
         <i class="bi bi-clock"></i>
         {% if p.body_content %}5 min{% else %}2 min{% endif %}
       </span>
-      <a href="/published_pages/{{ p.slug }}.html" class="read-link">
+      <a href="/articles/{{ p.slug }}" class="read-link">
         Read <i class="bi bi-arrow-right"></i>
       </a>
     </div>

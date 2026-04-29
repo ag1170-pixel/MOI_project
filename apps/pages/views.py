@@ -142,7 +142,7 @@ class PagePreviewView(LoginRequiredMixin, View):
         page = get_object_or_404(Page, pk=pk)
         from django.conf import settings
 
-        canonical = page.canonical_url or f'{settings.SITE_DOMAIN}/published_pages/{page.slug}.html'
+        canonical = page.canonical_url or f'{settings.SITE_DOMAIN}/articles/{page.slug}'
 
         context = {
             'page': page,

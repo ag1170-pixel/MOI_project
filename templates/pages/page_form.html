@@ -42,9 +42,8 @@
           <div class="mb-3">
             <label class="form-label fw-semibold" for="id_slug">URL Slug <span class="text-danger">*</span></label>
             <div class="input-group">
-              <span class="input-group-text text-muted">/published_pages/</span>
+              <span class="input-group-text text-muted">/articles/</span>
               {{ form.slug }}
-              <span class="input-group-text text-muted">.html</span>
             </div>
             {% if form.slug.errors %}<div class="invalid-feedback d-block">{{ form.slug.errors|join:" " }}</div>{% endif %}
             <small class="text-muted">Auto-generated from title. Only letters, numbers, and hyphens.</small>

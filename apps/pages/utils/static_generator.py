@@ -15,7 +15,7 @@ def generate(page):
     Render the page using base_layout.html and write a static .html file
     to published_pages/{slug}.html. Returns the output Path.
     """
-    canonical = page.canonical_url or f'{settings.SITE_DOMAIN}/published_pages/{page.slug}.html'
+    canonical = page.canonical_url or f'{settings.SITE_DOMAIN}/articles/{page.slug}'
 
     context = {
         'page': page,

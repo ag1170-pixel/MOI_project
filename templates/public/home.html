@@ -36,10 +36,10 @@
 
         <p class="hero-sub">{{ site.hero_subtitle }}</p>
 
-        <div class="hero-search">
-          <input type="text" placeholder="Explore places, culture, food, festivals..." readonly>
-          <button>Explore &rarr;</button>
-        </div>
+        <form method="get" action="/search/" class="hero-search">
+          <input type="text" name="q" placeholder="Explore places, culture, food, festivals...">
+          <button type="submit">Explore &rarr;</button>
+        </form>
 
         <div class="d-flex gap-3 flex-wrap mb-4">
           <a href="{{ site.hero_cta_url }}" class="btn-explore">
@@ -51,12 +51,12 @@
         </div>
 
         <div class="cat-pills">
-          <span class="cat-pill active">Culture</span>
-          <span class="cat-pill">Travel</span>
-          <span class="cat-pill">Food</span>
-          <span class="cat-pill">History</span>
-          <span class="cat-pill">Geography</span>
-          <span class="cat-pill">Festivals</span>
+          <a href="/my-india"         class="cat-pill active">Culture</a>
+          <a href="/search/?q=travel" class="cat-pill">Travel</a>
+          <a href="/search/?q=food"   class="cat-pill">Food</a>
+          <a href="/search/?q=history" class="cat-pill">History</a>
+          <a href="/maps"             class="cat-pill">Geography</a>
+          <a href="/search/?q=festivals" class="cat-pill">Festivals</a>
         </div>
 
       </div>
@@ -75,26 +75,26 @@
   <div class="row g-3 mb-5">
     {% for item in explore_items %}
     <div class="col-6 col-md-3">
-      <div class="explore-box">
+      <a href="{{ item.url|default:'/search/?q='|add:item.label }}" class="explore-box text-decoration-none d-block">
         <div class="box-body">
           <div class="box-icon"><i class="bi bi-{{ item.icon }}"></i></div>
           <div class="box-title">{{ item.label }}</div>
           <div class="box-line"></div>
         </div>
-      </div>
+      </a>
     </div>
     {% empty %}
     <div class="col-6 col-md-3">
-      <div class="explore-box"><div class="box-body"><div class="box-icon"><i class="bi bi-trophy-fill"></i></div><div class="box-title">Adventure</div><div class="box-line"></div></div></div>
+      <a href="/search/?q=adventure" class="explore-box text-decoration-none d-block"><div class="box-body"><div class="box-icon"><i class="bi bi-trophy-fill"></i></div><div class="box-title">Adventure</div><div class="box-line"></div></div></a>
     </div>
     <div class="col-6 col-md-3">
-      <div class="explore-box"><div class="box-body"><div class="box-icon"><i class="bi bi-flower1"></i></div><div class="box-title">Spiritual</div><div class="box-line"></div></div></div>
+      <a href="/search/?q=spiritual" class="explore-box text-decoration-none d-block"><div class="box-body"><div class="box-icon"><i class="bi bi-flower1"></i></div><div class="box-title">Spiritual</div><div class="box-line"></div></div></a>
     </div>
     <div class="col-6 col-md-3">
-      <div class="explore-box"><div class="box-body"><div class="box-icon"><i class="bi bi-egg-fried"></i></div><div class="box-title">Food</div><div class="box-line"></div></div></div>
+      <a href="/search/?q=food" class="explore-box text-decoration-none d-block"><div class="box-body"><div class="box-icon"><i class="bi bi-egg-fried"></i></div><div class="box-title">Food</div><div class="box-line"></div></div></a>
     </div>
     <div class="col-6 col-md-3">
-      <div class="explore-box"><div class="box-body"><div class="box-icon"><i class="bi bi-tree-fill"></i></div><div class="box-title">Nature</div><div class="box-line"></div></div></div>
+      <a href="/maps" class="explore-box text-decoration-none d-block"><div class="box-body"><div class="box-icon"><i class="bi bi-tree-fill"></i></div><div class="box-title">Nature</div><div class="box-line"></div></div></a>
     </div>
     {% endfor %}
   </div>

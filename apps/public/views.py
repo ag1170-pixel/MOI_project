@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views import View
 from django.core.paginator import Paginator
@@ -67,5 +68,25 @@ class MyIndiaView(View):
             'page_obj':   page_obj,
             'total':      qs.count(),
             'page_title': 'My India — Stories, Culture & Heritage',
+            'site':       SiteSettings.get_settings(),
+        })
+
+
+class SearchView(View):
+    template_name = 'public/search.html'
+
+    def get(self, request):
+        q = request.GET.get('q', '').strip()
+        results = Page.objects.none()
+        if q:
+            results = _published().filter(
+                Q(title__icontains=q) |
+                Q(description__icontains=q) |
+                Q(keywords__icontains=q)
+            )
+        return render(request, self.template_name, {
+            'query':      q,
+            'results':    results,
+            'page_title': f'Search: {q}' if q else 'Search — My India',
             'site':       SiteSettings.get_settings(),
         })

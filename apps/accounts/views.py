@@ -9,7 +9,10 @@ class LoginView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('dashboard:index')
+            # Already logged in — send editors to dashboard, viewers to site
+            if request.user.is_editor_user():
+                return redirect('dashboard:index')
+            return redirect('/')
         form = LoginForm()
         return render(request, self.template_name, {'form': form})
 
@@ -18,7 +21,10 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            next_url = request.GET.get('next', '/dashboard/')
+            # Honour explicit ?next= param; otherwise redirect by role
+            next_url = request.GET.get('next')
+            if not next_url:
+                next_url = '/dashboard/' if user.is_editor_user() else '/'
             return redirect(next_url)
         return render(request, self.template_name, {'form': form})
 

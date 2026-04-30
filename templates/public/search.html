@@ -1,0 +1,69 @@
+{% extends "public/public_base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+<!-- Hero -->
+<section class="hero-section" style="min-height:280px;">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content py-5">
+    <h1 class="hero-title" style="font-size:clamp(1.6rem,4vw,2.4rem);">
+      {% if query %}
+        Results for <span class="t-orange">"{{ query }}"</span>
+      {% else %}
+        <span class="t-orange">Search</span> Articles
+      {% endif %}
+    </h1>
+    <!-- Search form (also works from this page) -->
+    <form method="get" action="/search/" class="hero-search" style="max-width:520px;">
+      <input type="text" name="q" value="{{ query }}" placeholder="Explore places, culture, food, festivals..." autofocus>
+      <button type="submit">Search &rarr;</button>
+    </form>
+  </div>
+</section>
+
+<!-- Results -->
+<div class="container" style="padding:3rem 0 5rem;">
+
+  {% if query %}
+    {% if results %}
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h2 class="sec-title-left mb-0">
+          {{ results|length }} result{{ results|length|pluralize }} found
+        </h2>
+        <a href="/" style="color:var(--muted);font-size:.85rem;text-decoration:none;">
+          <i class="bi bi-arrow-left me-1"></i>Back to Home
+        </a>
+      </div>
+
+      <div class="row g-4">
+        {% for p in results %}
+        <div class="col-sm-6 col-lg-4 d-flex">
+          {% include "public/_article_card.html" %}
+        </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="empty-state">
+        <div style="font-size:3.5rem;color:#FED7AA;" class="mb-3"><i class="bi bi-search"></i></div>
+        <h3 class="fw-bold" style="color:var(--orange);">No results found</h3>
+        <p class="text-muted mb-4">No articles match "<strong>{{ query }}</strong>". Try a different keyword.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="/maps" class="btn-explore">Browse Maps</a>
+          <a href="/my-india" style="color:var(--orange);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:.6rem 1.4rem;border:2px solid var(--orange);border-radius:8px;">Browse Stories</a>
+        </div>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="empty-state">
+      <div style="font-size:3.5rem;color:#FED7AA;" class="mb-3"><i class="bi bi-search"></i></div>
+      <h3 class="fw-bold" style="color:var(--orange);">What are you looking for?</h3>
+      <p class="text-muted">Enter a keyword above to search across all articles, maps and stories.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

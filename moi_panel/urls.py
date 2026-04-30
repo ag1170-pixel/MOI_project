@@ -3,6 +3,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.shortcuts import render
+
+# Custom error handlers
+def handler403(request, exception=None):
+    return render(request, '403.html', status=403)
+
+def handler404(request, exception=None):
+    return render(request, '404.html', status=404)
 
 
 def sitemap_view(request):
@@ -88,3 +96,6 @@ urlpatterns = [
     # Sitemap
     path('sitemap.xml', sitemap_view, name='sitemap'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Wire up custom error pages (Django looks for these names at the module level)
+# handler403 and handler404 are already defined as functions above

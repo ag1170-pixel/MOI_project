@@ -3,6 +3,18 @@
 
 {% block content %}
 
+<!-- Viewer notice -->
+{% if not request.user.is_editor_user %}
+<div class="alert alert-info d-flex align-items-center gap-2 mb-4" role="alert">
+  <i class="bi bi-eye-fill fs-5"></i>
+  <div>
+    <strong>View-only access.</strong>
+    Your account has the <em>Viewer</em> role — you can browse pages and previews but cannot create, edit, publish, or delete.
+    Contact an Admin to upgrade your permissions.
+  </div>
+</div>
+{% endif %}
+
 <!-- Page header -->
 <div class="page-header">
   <div>

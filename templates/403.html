@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Access Denied{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center" style="min-height:60vh;text-align:center;">
+  <div style="font-size:4rem;color:#F97316;" class="mb-3"><i class="bi bi-shield-lock-fill"></i></div>
+  <h2 class="fw-bold mb-2" style="color:#111827;">Access Denied</h2>
+  <p class="text-muted mb-4" style="max-width:420px;">
+    Your <strong>{{ request.user.get_role_display }}</strong> account does not have permission to perform this action.
+    Contact an Admin to request elevated access.
+  </p>
+  <div class="d-flex gap-3">
+    <a href="/dashboard/" class="btn fw-semibold"
+       style="background:var(--moi-blue);color:#fff;border-radius:10px;padding:.5rem 1.4rem;">
+      <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

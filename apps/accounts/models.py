@@ -23,11 +23,24 @@ class CustomUser(AbstractUser):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
+    def save(self, *args, **kwargs):
+        # Django superusers must have at least the admin role in our panel.
+        # This prevents a superuser from accidentally locking themselves out,
+        # and ensures role is always the single source of truth for RBAC.
+        if self.is_superuser and self.role != self.ROLE_ADMIN:
+            self.role = self.ROLE_ADMIN
+        super().save(*args, **kwargs)
+
     def is_admin_user(self):
-        return self.role == self.ROLE_ADMIN or self.is_superuser
+        """Returns True only when the user's role is 'admin'.
+        is_superuser is intentionally NOT checked here — role is the
+        single source of truth so that changing a role to 'viewer' is
+        immediately respected everywhere."""
+        return self.role == self.ROLE_ADMIN
 
     def is_editor_user(self):
-        return self.role in (self.ROLE_ADMIN, self.ROLE_EDITOR) or self.is_superuser
+        """Returns True for admin and editor roles (not viewer)."""
+        return self.role in (self.ROLE_ADMIN, self.ROLE_EDITOR)
 
     def get_role_badge_color(self):
         colors = {

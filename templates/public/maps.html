@@ -22,12 +22,25 @@
     </h1>
     <p class="hero-sub">Detailed maps of states, districts, cities and tourist destinations across India.</p>
     {% if total %}
-    <span style="background:var(--orange);color:#fff;border-radius:20px;padding:.3rem .9rem;font-size:.82rem;font-weight:700;display:inline-block;">
+    <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:.3rem .9rem;font-size:.82rem;font-weight:700;display:inline-block;backdrop-filter:blur(4px);">
       <i class="bi bi-collection me-1"></i>{{ total }} article{{ total|pluralize }}
     </span>
     {% endif %}
   </div>
 </section>
+
+<!-- Category pills bar on Maps -->
+<div class="cat-pills-bar">
+  <div class="container">
+    <div class="cat-pills">
+      <a href="/maps"                       class="cat-pill active">All Maps</a>
+      <a href="/search/?q=state+map"        class="cat-pill">State Maps</a>
+      <a href="/search/?q=district+map"     class="cat-pill">Districts</a>
+      <a href="/search/?q=city+map"         class="cat-pill">Cities</a>
+      <a href="/search/?q=tourist+map"      class="cat-pill">Tourist</a>
+    </div>
+  </div>
+</div>
 
 <div class="container section-wrap">
 

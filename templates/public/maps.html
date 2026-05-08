@@ -5,24 +5,23 @@
 {% block body %}
 
 <!-- Hero -->
-<section class="hero-section hero-dark" style="min-height:340px;">
-  <div class="hero-bg" style="background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);"></div>
-  <div class="hero-overlay" style="opacity:1;background:linear-gradient(135deg,rgba(17,24,39,.6) 0%,rgba(17,24,39,.2) 100%);"></div>
+<section class="hero-section" style="min-height:300px;">
+  <div class="hero-bg" style="background:linear-gradient(160deg,#eff6ff 0%,#dbeafe 55%,#fff 100%);"></div>
   <div class="container hero-content py-5">
-    <div class="hero-badge" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);">
+    <div class="hero-badge">
       <div class="flag-dots">
         <span style="background:#FF9933;"></span>
         <span style="background:#fff;"></span>
         <span style="background:#138808;"></span>
       </div>
-      Maps Section
+      Maps of India
     </div>
     <h1 class="hero-title" style="font-size:clamp(1.8rem,4vw,2.6rem);">
       Explore <span class="t-orange">India's Maps</span>
     </h1>
     <p class="hero-sub">Detailed maps of states, districts, cities and tourist destinations across India.</p>
     {% if total %}
-    <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:.3rem .9rem;font-size:.82rem;font-weight:700;display:inline-block;backdrop-filter:blur(4px);">
+    <span style="background:rgba(26,60,110,.08);border:1px solid rgba(26,60,110,.18);color:var(--navy);border-radius:20px;padding:.3rem .9rem;font-size:.82rem;font-weight:700;display:inline-block;">
       <i class="bi bi-collection me-1"></i>{{ total }} article{{ total|pluralize }}
     </span>
     {% endif %}
@@ -67,7 +66,7 @@
 
   <div class="empty-state">
     <div style="font-size:4rem;color:#bfdbfe;" class="mb-3"><i class="bi bi-map"></i></div>
-    <h3 class="fw-bold" style="color:#1e40af;">No maps articles yet</h3>
+    <h3 class="fw-bold" style="color:var(--navy);">No maps articles yet</h3>
     <p class="text-muted">Create a page in the panel with <strong>Category → Maps</strong> and it will appear here.</p>
     {% if request.user.is_authenticated %}
     <a href="/pages/create/" class="btn mt-2 fw-semibold"

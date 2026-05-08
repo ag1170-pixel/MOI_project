@@ -42,7 +42,8 @@
     .btn-panel:hover { background: #EA6C10; }
 
     /* ── AD BANNER ── */
-    .ad-banner { background: #F9FAFB; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; padding: .65rem; font-size: .72rem; color: #9CA3AF; letter-spacing: .08em; text-transform: uppercase; }
+    .ad-banner { background: #F3F4F6; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; padding: 1.5rem 1rem; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+    .ad-banner span { font-size: .7rem; color: #9CA3AF; letter-spacing: .1em; text-transform: uppercase; border: 1.5px dashed #D1D5DB; border-radius: 6px; padding: .4rem 1.2rem; }
 
     /* ── HERO (light version matching Figma) ── */
     .hero-section { position: relative; background: #fff; min-height: 360px; display: flex; align-items: center; overflow: hidden; }
@@ -292,6 +293,11 @@
     </nav>
   </div>
 </header>
+
+<!-- ═══ AD BANNER ═══ -->
+<div class="ad-banner">
+  <span>Advertisement</span>
+</div>
 
 {% block body %}{% endblock %}
 

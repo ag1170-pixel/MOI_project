@@ -41,52 +41,13 @@
   </div>
 </div>
 
-<!-- Featured Cards (first 3 as large tiles) -->
 {% if page_obj.object_list %}
 <div class="container" style="padding-top:3rem;">
-  <div class="text-center mb-5">
-    <div class="section-eyebrow"><i class="bi bi-palette-fill"></i>Culture</div>
-    <h2 class="section-heading"><span class="word-orange">Cultural</span> Heritage</h2>
-    <p class="section-sub">Experience the vibrant traditions, festivals, and stories that define India</p>
-  </div>
-
-  <!-- First 3 as featured -->
-  {% if page_obj.object_list|length >= 3 %}
-  <div class="row g-3 mb-4">
-    {% for p in page_obj.object_list|slice:":3" %}
-    <div class="col-md-4">
-      <div class="featured-card">
-        {% if p.featured_image %}
-        <img src="{{ p.featured_image.url }}" alt="{{ p.title }}">
-        {% else %}
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#C2410C,#F97316);"></div>
-        {% endif %}
-        <div class="overlay"></div>
-        <div class="content">
-          <span class="feat-badge">Featured</span>
-          <div class="feat-title">{{ p.title }}</div>
-          {% if p.description %}
-          <div class="feat-sub">{{ p.description|truncatechars:60 }}</div>
-          {% endif %}
-          <div class="flag-line">
-            <span style="background:#FF9933;"></span>
-            <span style="background:#fff;"></span>
-            <span style="background:#138808;"></span>
-          </div>
-          <a href="/articles/{{ p.slug }}"
-             style="color:rgba(255,255,255,.8);font-size:.78rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:.5rem;">
-            Explore More <i class="bi bi-arrow-right"></i>
-          </a>
-        </div>
-      </div>
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <div class="eyebrow"><i class="bi bi-palette-fill me-1"></i>Culture</div>
+      <h2 class="sec-title-left mb-0">All <span style="color:var(--orange);">Stories</span></h2>
     </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <!-- Rest as cards -->
-  <div class="d-flex align-items-center justify-content-between mb-4 mt-5">
-    <h2 class="section-title-line mb-0">All Stories</h2>
     <a href="/" class="text-muted small text-decoration-none">
       <i class="bi bi-arrow-left me-1"></i>Back to Home
     </a>

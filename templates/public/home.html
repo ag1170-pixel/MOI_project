@@ -94,7 +94,7 @@
 
 <!-- ═══ FEATURED STORIES ═══ -->
 {% if my_india_pages %}
-<div class="sec-wrap">
+<div class="sec-wrap bg-warm">
   <div class="container">
     <div class="text-center mb-5">
       <div class="eyebrow"><i class="bi bi-stars me-1"></i>Featured</div>
@@ -103,33 +103,7 @@
     </div>
     <div class="row g-4">
       {% for p in my_india_pages %}
-      <div class="col-sm-6 col-lg-4">
-        <a href="/articles/{{ p.slug }}" class="feat-card d-block text-decoration-none">
-          {% if p.featured_image %}
-          <img src="{{ p.featured_image.url }}" alt="{{ p.title }}">
-          {% else %}
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a3c6e,#2563a8);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.25);font-size:4rem;"><i class="bi bi-image"></i></div>
-          {% endif %}
-          <div class="feat-overlay"></div>
-          <div class="feat-body">
-            {% if p.category == 'maps' %}
-            <span class="feat-badge">Maps</span>
-            {% elif p.category == 'my_india' %}
-            <span class="feat-badge">Culture</span>
-            {% else %}
-            <span class="feat-badge">Story</span>
-            {% endif %}
-            <div class="feat-title">{{ p.title }}</div>
-            {% if p.description %}
-            <div class="feat-sub">{{ p.description|truncatechars:90 }}</div>
-            {% endif %}
-            <div class="feat-stats">
-              <span><i class="bi bi-clock"></i> 5 min read</span>
-              <span><i class="bi bi-eye"></i> Explore</span>
-            </div>
-          </div>
-        </a>
-      </div>
+      <div class="col-sm-6 col-lg-4 d-flex">{% include "public/_article_card.html" %}</div>
       {% endfor %}
     </div>
     <div class="text-center mt-4">

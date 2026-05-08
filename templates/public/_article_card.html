@@ -1,5 +1,5 @@
 {# Reusable article card — {% include "public/_article_card.html" %} #}
-<div class="art-card">
+<a href="/articles/{{ p.slug }}" class="art-card text-decoration-none d-flex flex-column w-100">
 
   <div class="img-wrap">
     {% if p.featured_image %}
@@ -14,16 +14,11 @@
     <!-- Overlay tags -->
     <div class="art-tags">
       {% if p.category == 'maps' %}
-      <span class="art-tag">Maps</span>
+      <span class="art-tag tag-maps">Maps</span>
       {% elif p.category == 'my_india' %}
-      <span class="art-tag">Culture</span>
+      <span class="art-tag tag-culture">Culture</span>
       {% else %}
-      <span class="art-tag">General</span>
-      {% endif %}
-      {% if p.keywords %}
-      {% with kw=p.keywords|truncatechars:15 %}
-      <span class="art-tag">{{ kw }}</span>
-      {% endwith %}
+      <span class="art-tag tag-general">General</span>
       {% endif %}
     </div>
   </div>
@@ -31,17 +26,17 @@
   <div class="body">
     <div class="art-title">{{ p.title }}</div>
     {% if p.description %}
-    <p class="art-desc">{{ p.description }}</p>
+    <p class="art-desc">{{ p.description|truncatechars:100 }}</p>
     {% endif %}
     <div class="art-foot">
-      <span class="read-time">
-        <i class="bi bi-clock"></i>
-        {% if p.body_content %}5 min{% else %}2 min{% endif %}
-      </span>
-      <a href="/articles/{{ p.slug }}" class="read-link">
+      <div class="art-stats">
+        <span><i class="bi bi-star-fill" style="color:#F59E0B;"></i> 4.8</span>
+        <span><i class="bi bi-clock"></i> {% if p.body_content %}5 min{% else %}2 min{% endif %}</span>
+      </div>
+      <span class="read-link">
         Read <i class="bi bi-arrow-right"></i>
-      </a>
+      </span>
     </div>
   </div>
 
-</div>
+</a>

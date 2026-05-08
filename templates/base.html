@@ -42,10 +42,13 @@
         </span>
       </div>
 
-      <!-- Logout -->
-      <a href="{% url 'accounts:logout' %}" class="btn btn-logout btn-sm d-flex align-items-center gap-1">
-        <i class="bi bi-box-arrow-right"></i><span class="d-none d-sm-inline">Logout</span>
-      </a>
+      <!-- Logout (POST to prevent CSRF logout attacks) -->
+      <form method="post" action="{% url 'accounts:logout' %}" class="d-inline m-0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-logout btn-sm d-flex align-items-center gap-1">
+          <i class="bi bi-box-arrow-right"></i><span class="d-none d-sm-inline">Logout</span>
+        </button>
+      </form>
       {% endif %}
     </div>
 

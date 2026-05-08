@@ -1,5 +1,6 @@
 {% extends "public/public_base.html" %}
 {% block page_title %}{{ page_title }}{% endblock %}
+{% block nav_search %}active{% endblock %}
 
 {% block body %}
 
@@ -15,7 +16,6 @@
         <span class="t-orange">Search</span> Articles
       {% endif %}
     </h1>
-    <!-- Search form (also works from this page) -->
     <form method="get" action="/search/" class="hero-search" style="max-width:520px;">
       <input type="text" name="q" value="{{ query }}" placeholder="Explore places, culture, food, festivals..." autofocus>
       <button type="submit">Search &rarr;</button>
@@ -27,10 +27,10 @@
 <div class="container" style="padding:3rem 0 5rem;">
 
   {% if query %}
-    {% if results %}
+    {% if result_count %}
       <div class="d-flex align-items-center justify-content-between mb-4">
         <h2 class="sec-title-left mb-0">
-          {{ results|length }} result{{ results|length|pluralize }} found
+          {{ result_count }} result{{ result_count|pluralize }} for &ldquo;{{ query }}&rdquo;
         </h2>
         <a href="/" style="color:var(--muted);font-size:.85rem;text-decoration:none;">
           <i class="bi bi-arrow-left me-1"></i>Back to Home
@@ -45,11 +45,13 @@
         {% endfor %}
       </div>
 
+      {% include "public/_pagination.html" %}
+
     {% else %}
       <div class="empty-state">
         <div style="font-size:3.5rem;color:#FED7AA;" class="mb-3"><i class="bi bi-search"></i></div>
         <h3 class="fw-bold" style="color:var(--orange);">No results found</h3>
-        <p class="text-muted mb-4">No articles match "<strong>{{ query }}</strong>". Try a different keyword.</p>
+        <p class="text-muted mb-4">No articles match &ldquo;<strong>{{ query }}</strong>&rdquo;. Try a different keyword.</p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
           <a href="/maps" class="btn-explore">Browse Maps</a>
           <a href="/my-india" style="color:var(--orange);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:.6rem 1.4rem;border:2px solid var(--orange);border-radius:8px;">Browse Stories</a>
@@ -62,6 +64,15 @@
       <div style="font-size:3.5rem;color:#FED7AA;" class="mb-3"><i class="bi bi-search"></i></div>
       <h3 class="fw-bold" style="color:var(--orange);">What are you looking for?</h3>
       <p class="text-muted">Enter a keyword above to search across all articles, maps and stories.</p>
+      <!-- Quick suggestion pills -->
+      <div class="cat-pills justify-content-center mt-4">
+        <a href="/search/?q=culture"   class="cat-pill">Culture</a>
+        <a href="/search/?q=travel"    class="cat-pill">Travel</a>
+        <a href="/search/?q=food"      class="cat-pill">Food</a>
+        <a href="/search/?q=history"   class="cat-pill">History</a>
+        <a href="/search/?q=festivals" class="cat-pill">Festivals</a>
+        <a href="/maps"                class="cat-pill">Maps</a>
+      </div>
     </div>
   {% endif %}
 

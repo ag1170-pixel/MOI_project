@@ -80,9 +80,8 @@
 
   <div class="row g-3 mb-5">
     {% for item in explore_items %}
-    {% with color_class="eb-"|add:forloop.counter|stringformat:"s" %}
     <div class="col-6 col-md-3">
-      <a href="{{ item.url|default:'/search/?q='|add:item.label }}" class="explore-box {{ color_class }} text-decoration-none d-block">
+      <a href="{{ item.url }}" class="explore-box {% cycle 'eb-1' 'eb-2' 'eb-3' 'eb-4' %} text-decoration-none d-block">
         <div class="box-body">
           <div class="box-icon"><i class="bi bi-{{ item.icon }}"></i></div>
           <div class="box-title">{{ item.label }}</div>
@@ -90,7 +89,6 @@
         </div>
       </a>
     </div>
-    {% endwith %}
     {% empty %}
     <div class="col-6 col-md-3">
       <a href="/search/?q=adventure" class="explore-box eb-1 text-decoration-none d-block"><div class="box-body"><div class="box-icon"><i class="bi bi-trophy-fill"></i></div><div class="box-title">Adventure</div><div class="box-line"></div></div></a>

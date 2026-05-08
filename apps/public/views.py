@@ -4,6 +4,14 @@ from django.views import View
 from django.core.paginator import Paginator
 from apps.pages.models import Page, SiteSettings
 
+# Hardcoded explore items — shown on home page explore section
+EXPLORE_ITEMS = [
+    {'icon': 'trophy-fill',   'label': 'Adventure', 'url': '/search/?q=adventure'},
+    {'icon': 'flower1',       'label': 'Spiritual',  'url': '/search/?q=spiritual'},
+    {'icon': 'egg-fried',     'label': 'Food',       'url': '/search/?q=food'},
+    {'icon': 'tree-fill',     'label': 'Nature',     'url': '/maps'},
+]
+
 
 def _published(category=None):
     qs = Page.objects.filter(status=Page.STATUS_PUBLISHED).select_related('editor')
@@ -39,6 +47,7 @@ class HomeView(View):
             'hero_word1':     hero_word1,
             'hero_word2':     hero_word2,
             'hero_word3':     hero_word3,
+            'explore_items':  EXPLORE_ITEMS,
         })
 
 
@@ -77,16 +86,19 @@ class SearchView(View):
 
     def get(self, request):
         q = request.GET.get('q', '').strip()
-        results = Page.objects.none()
+        results_qs = Page.objects.none()
         if q:
-            results = _published().filter(
+            results_qs = _published().filter(
                 Q(title__icontains=q) |
                 Q(description__icontains=q) |
                 Q(keywords__icontains=q)
             )
+        page_obj = Paginator(results_qs, 12).get_page(request.GET.get('page', 1))
         return render(request, self.template_name, {
-            'query':      q,
-            'results':    results,
-            'page_title': f'Search: {q}' if q else 'Search — My India',
-            'site':       SiteSettings.get_settings(),
+            'query':        q,
+            'results':      page_obj,          # paginated
+            'result_count': results_qs.count() if q else 0,
+            'page_obj':     page_obj,
+            'page_title':   f'Search: {q}' if q else 'Search — My India',
+            'site':         SiteSettings.get_settings(),
         })

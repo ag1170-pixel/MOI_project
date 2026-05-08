@@ -4,12 +4,28 @@ from django.views import View
 from django.core.paginator import Paginator
 from apps.pages.models import Page, SiteSettings
 
-# Hardcoded explore items — shown on home page explore section
+# Hardcoded explore items
 EXPLORE_ITEMS = [
     {'icon': 'trophy-fill',   'label': 'Adventure', 'url': '/search/?q=adventure'},
     {'icon': 'flower1',       'label': 'Spiritual',  'url': '/search/?q=spiritual'},
     {'icon': 'egg-fried',     'label': 'Food',       'url': '/search/?q=food'},
     {'icon': 'tree-fill',     'label': 'Nature',     'url': '/maps'},
+]
+
+# India's states for the "Discover India's States" section
+INDIA_STATES = [
+    {'name': 'Rajasthan',      'icon': 'sun-fill',           'tag': 'Desert & Palaces'},
+    {'name': 'Kerala',         'icon': 'tree-fill',           'tag': "God's Own Country"},
+    {'name': 'Maharashtra',    'icon': 'building-fill',       'tag': 'City of Dreams'},
+    {'name': 'Tamil Nadu',     'icon': 'bank2',               'tag': 'Land of Temples'},
+    {'name': 'Uttar Pradesh',  'icon': 'building',            'tag': 'Heart of India'},
+    {'name': 'West Bengal',    'icon': 'palette-fill',        'tag': 'Culture & Art'},
+    {'name': 'Gujarat',        'icon': 'brightness-high-fill','tag': 'Land of Gandhi'},
+    {'name': 'Punjab',         'icon': 'heart-fill',          'tag': 'Land of Five Rivers'},
+    {'name': 'Goa',            'icon': 'water',               'tag': 'Pearl of the Orient'},
+    {'name': 'Karnataka',      'icon': 'cpu-fill',            'tag': 'Silicon Valley of India'},
+    {'name': 'Himachal Pradesh','icon': 'snow',               'tag': 'Land of Gods'},
+    {'name': 'Odisha',         'icon': 'gem',                 'tag': 'Temple State'},
 ]
 
 
@@ -38,16 +54,18 @@ class HomeView(View):
         hero_word3 = words[-1] if len(words) > 1 else 'Before'
 
         return render(request, self.template_name, {
-            'page_obj':       page_obj,
-            'maps_pages':     _published(category=Page.CATEGORY_MAPS)[:n],
-            'my_india_pages': _published(category=Page.CATEGORY_MY_INDIA)[:n],
+            'page_obj':        page_obj,
+            'maps_pages':      _published(category=Page.CATEGORY_MAPS)[:n],
+            'my_india_pages':  _published(category=Page.CATEGORY_MY_INDIA)[:n],
+            'video_pages':     _published(category=Page.CATEGORY_MY_INDIA)[:6],
             'total_published': all_pages.count(),
-            'page_title':     'My India — Discover India Like Never Before',
-            'site':           settings,
-            'hero_word1':     hero_word1,
-            'hero_word2':     hero_word2,
-            'hero_word3':     hero_word3,
-            'explore_items':  EXPLORE_ITEMS,
+            'page_title':      'My India — Discover India Like Never Before',
+            'site':            settings,
+            'hero_word1':      hero_word1,
+            'hero_word2':      hero_word2,
+            'hero_word3':      hero_word3,
+            'explore_items':   EXPLORE_ITEMS,
+            'india_states':    INDIA_STATES,
         })
 
 
